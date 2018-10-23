@@ -6,14 +6,20 @@ const moment = require("moment");
 
 if (process.argv[2] === "concert-this") {
     // console.log(process.argv.splice(3).join(" "));
-    let artist = process.argv[3];
+    let artist = [];
+    for (let i = 3; i < process.argv.length; i++) {
+        artist.push(process.argv[i]);
+    };
+    artist = artist.join(" ")
+    console.log(artist)
     let bandsURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
     // console.log(bandsURL)
     request(bandsURL, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             for (let i = 0; i < JSON.parse(body).length; i++) {
+                // console.log(JSON.parse(body)[i].venue);
                 console.log(JSON.parse(body)[i].venue.name);
-                console.log(JSON.parse(body)[i].venue.country);
+                console.log(`${JSON.parse(body)[i].venue.city}, ${JSON.parse(body)[i].venue.country}`);
                 console.log(moment(JSON.parse(body)[i].datetime).format('L'));
                 console.log("----------");
             }
