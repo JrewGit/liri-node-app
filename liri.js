@@ -1,16 +1,18 @@
-// require("dotenv").config();
-// const keys = require("./keys");
-// const spotify = new Spotify(keys.spotify);
+require("dotenv").config();
+const keys = require("./keys");
+const Spotify = require('node-spotify-api');
+const spotify = new Spotify(keys.spotify);
 const request = require("request");
 const moment = require("moment");
+const fs = require("fs");
 
 if (process.argv[2] === "concert-this") {
-    // console.log(process.argv.splice(3).join(" "));
+
     let artist = [];
     for (let i = 3; i < process.argv.length; i++) {
         artist.push(process.argv[i]);
     };
-    artist = artist.join(" ")
+    artist = artist.join(" ");
     // console.log(artist)
     let bandsURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
     // console.log(bandsURL)
@@ -29,17 +31,40 @@ if (process.argv[2] === "concert-this") {
             }
         }
     })
+
 } else if (process.argv[2] === "spotify-this-song") {
 
+    let song = [];
+    if (process.argv[3] === undefined) {
+        song.push("The Sign");
+    } else {
+        for (let i = 3; i < process.argv.length; i++) {
+            song.push(process.argv[i]);
+        };
+    };
+    song = song.join(" ");
+    spotify.search({ type: 'track', query: song }, function(err, data) {
+        if (err) {
+          return console.log('Error occurred: ' + err);
+        }
+       
+      console.log(data.tracks); 
+      });
+
 } else if (process.argv[2] === "movie-this") {
+
     let movieName = [];
-    for (let i = 3; i < process.argv.length; i++) {
-        movieName.push(process.argv[i]);
+    if (process.argv[3] === undefined) {
+        movieName.push("Mr. Nobody");
+    } else {
+        for (let i = 3; i < process.argv.length; i++) {
+            movieName.push(process.argv[i]);
+        };
     };
     movieName = movieName.join(" ")
     let movieURL = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
     console.log(movieURL);
-    request(movieURL,function(error,response,body) {
+    request(movieURL, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             // console.log(JSON.parse(body));
             console.log(`Title: ${JSON.parse(body).Title}`);
@@ -52,6 +77,9 @@ if (process.argv[2] === "concert-this") {
             console.log(`Actors: ${JSON.parse(body).Actors}`);
         }
     })
+
 } else if (process.argv[2] === "do-what-it-says") {
+
+
 
 }
