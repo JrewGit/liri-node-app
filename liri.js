@@ -17,13 +17,13 @@ if (process.argv[2] === "concert-this") {
     let bandsURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
     // console.log(bandsURL)
     request(bandsURL, function (error, response, body) {
-        console.log("something");
         if (!error && response.statusCode === 200) {
             for (let i = 0; i < JSON.parse(body).length; i++) {
-                console.log(response.statusCode)
-                console.log(JSON.parse(body)[i].venue.name);
-                console.log(`${JSON.parse(body)[i].venue.city}, ${JSON.parse(body)[i].venue.country}`);
-                console.log(moment(JSON.parse(body)[i].datetime).format('L'));
+                // console.log(JSON.parse(body)[i].venue);
+                console.log(`Name of the venue: ${JSON.parse(body)[i].venue.name}`);
+                // console.log(`${JSON.parse(body)[i].venue.region}`);
+                console.log(`Venue location: ${JSON.parse(body)[i].venue.city}, ${JSON.parse(body)[i].venue.country}`);
+                console.log(`Date of the Event: ${moment(JSON.parse(body)[i].datetime).format('L')}`);
                 console.log("----------");
             }
         }
@@ -41,10 +41,10 @@ if (process.argv[2] === "concert-this") {
             }
             // console.log(data.tracks.items[7]);
             console.log("----------");
-            console.log(data.tracks.items[7].album.artists[0].name);
-            console.log(data.tracks.items[7].name);
-            console.log(data.tracks.items[7].preview_url);
-            console.log(data.tracks.items[7].album.name);
+            console.log(`Artist(s): ${data.tracks.items[7].album.artists[0].name}`);
+            console.log(`Song's name: ${data.tracks.items[7].name}`);
+            console.log(`Preview link from Spotify: ${data.tracks.items[7].preview_url}`);
+            console.log(`Album: ${data.tracks.items[7].album.name}`);
             console.log("----------");
         });
     } else {
@@ -58,10 +58,10 @@ if (process.argv[2] === "concert-this") {
             }
             // console.log(data.tracks.items);
             console.log("----------");
-            console.log(data.tracks.items[0].album.artists[0].name);
-            console.log(data.tracks.items[0].name);
-            console.log(data.tracks.items[0].preview_url);
-            console.log(data.tracks.items[0].album.name);
+            console.log(`Artist(s): ${data.tracks.items[0].album.artists[0].name}`);
+            console.log(`Song's name: ${data.tracks.items[0].name}`);
+            console.log(`Preview link from Spotify: ${data.tracks.items[0].preview_url}`);
+            console.log(`Album: ${data.tracks.items[0].album.name}`);
             console.log("----------");
         });
     };
