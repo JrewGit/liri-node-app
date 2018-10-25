@@ -37,19 +37,37 @@ if (process.argv[2] === "concert-this") {
     let song = [];
     if (process.argv[3] === undefined) {
         song.push("The Sign");
+        song = song.join(" ");
+        spotify.search({ type: 'track', query: song, limit: 20 }, function (err, data) {
+            if (err) {
+                return console.log('Error occurred: ' + err);
+            }
+            // console.log(data.tracks.items[7]);
+            console.log("----------");
+            console.log(data.tracks.items[7].album.artists[0].name);
+            console.log(data.tracks.items[7].name);
+            console.log(data.tracks.items[7].preview_url);
+            console.log(data.tracks.items[7].album.name);
+            console.log("----------");
+        });
     } else {
         for (let i = 3; i < process.argv.length; i++) {
             song.push(process.argv[i]);
         };
+        song = song.join(" ");
+        spotify.search({ type: 'track', query: song, limit: 1 }, function (err, data) {
+            if (err) {
+                return console.log('Error occurred: ' + err);
+            }
+            // console.log(data.tracks.items);
+            console.log("----------");
+            console.log(data.tracks.items[0].album.artists[0].name);
+            console.log(data.tracks.items[0].name);
+            console.log(data.tracks.items[0].preview_url);
+            console.log(data.tracks.items[0].album.name);
+            console.log("----------");
+        });
     };
-    song = song.join(" ");
-    spotify.search({ type: 'track', query: song }, function(err, data) {
-        if (err) {
-          return console.log('Error occurred: ' + err);
-        }
-       
-      console.log(data.tracks); 
-      });
 
 } else if (process.argv[2] === "movie-this") {
 
@@ -63,10 +81,11 @@ if (process.argv[2] === "concert-this") {
     };
     movieName = movieName.join(" ")
     let movieURL = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
-    console.log(movieURL);
+    // console.log(movieURL);
     request(movieURL, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             // console.log(JSON.parse(body));
+            console.log("----------");
             console.log(`Title: ${JSON.parse(body).Title}`);
             console.log(`Year: ${JSON.parse(body).Year}`);
             console.log(`IMDB Rating: ${JSON.parse(body).imdbRating}`);
@@ -75,6 +94,7 @@ if (process.argv[2] === "concert-this") {
             console.log(`Language: ${JSON.parse(body).Language}`);
             console.log(`Plot: ${JSON.parse(body).Plot}`);
             console.log(`Actors: ${JSON.parse(body).Actors}`);
+            console.log("----------");
         }
     })
 
